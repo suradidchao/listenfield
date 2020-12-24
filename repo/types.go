@@ -10,6 +10,7 @@ type Farm struct {
 	Fields      []Field   `json:"fields"`
 	Tractors    []Tractor `json:"tractors"`
 	FarmWorkers []Farmer  `json:"farm_workers"`
+	CreatedDate time.Time `json:"created_date"`
 }
 
 // Farmer is a farm entity
