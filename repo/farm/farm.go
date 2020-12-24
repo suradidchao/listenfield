@@ -1,10 +1,12 @@
 package farm
 
-import "github.com/suradidchao/listenfield/repo"
+import (
+	"github.com/suradidchao/listenfield/entity"
+)
 
 // IRepo is an interface for farm repository
 type IRepo interface {
-	CreateFarm(farm repo.Farm, farmerID int) (farmID int, err error)
+	CreateFarm(farm entity.Farm, farmerID int) (farmID int, err error)
 }
 
 // Repo is a farm repo
@@ -13,7 +15,7 @@ type Repo struct {
 }
 
 // CreateFarm is a method for creating farm for repo
-func (r Repo) CreateFarm(farm repo.Farm, farmerID int) (farmID int, err error) {
+func (r Repo) CreateFarm(farm entity.Farm, farmerID int) (farmID int, err error) {
 	return r.farmAdapter.CreateFarm(farm, farmerID)
 }
 

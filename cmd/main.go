@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/suradidchao/listenfield/repo"
+	"github.com/suradidchao/listenfield/entity"
 )
 
 func main() {
 	fmt.Println("Hello listen field")
-	farm := repo.Farm{FarmName: "jia farm"}
+	farm := entity.Farm{FarmName: "jia farm"}
 	fmt.Printf("%+v\n", farm)
 }
