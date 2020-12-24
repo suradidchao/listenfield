@@ -5,19 +5,19 @@ import (
 	"github.com/suradidchao/listenfield/repo/farm"
 )
 
-// Farm is a usecase for farm
-type Farm struct {
+// FarmUsecase is a usecase for farm
+type FarmUsecase struct {
 	farmRepo farm.IRepo
 }
 
 // Create is a create farm usecase
-func (f Farm) Create(farm entity.Farm, farmerID int) (fid int, err error) {
-	return f.farmRepo.CreateFarm(farm, farmerID)
+func (fc FarmUsecase) Create(farm entity.Farm, farmerID int) (fid int, err error) {
+	return fc.farmRepo.CreateFarm(farm, farmerID)
 }
 
-// NewFarm is a factory method for farm usecase
-func NewFarm(fr farm.IRepo) Farm {
-	return Farm{
+// NewFarmUsecase is a factory method for farm usecase
+func NewFarmUsecase(fr farm.IRepo) FarmUsecase {
+	return FarmUsecase{
 		farmRepo: fr,
 	}
 }
