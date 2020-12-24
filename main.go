@@ -6,7 +6,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"github.com/suradidchao/listenfield/handler"
 	"github.com/suradidchao/listenfield/repo/farm"
 	"github.com/suradidchao/listenfield/usecase"
@@ -15,11 +16,11 @@ import (
 func main() {
 
 	const (
-		mysqlUser   = "zocialeye"
-		mysqlPass   = "zocialeye"
+		mysqlUser   = "listenfield"
+		mysqlPass   = "listenfield"
 		mysqlHost   = "localhost"
 		mysqlPort   = 3306
-		mysqlDBName = "lb"
+		mysqlDBName = "listenfield"
 	)
 
 	mysqlURI := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", mysqlUser, mysqlPass, mysqlHost, mysqlPort, mysqlDBName)
@@ -34,9 +35,12 @@ func main() {
 	farmUsecase := usecase.NewFarmUsecase(farmRepo)
 	farmHandler := handler.NewFarmHandler(farmUsecase)
 	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Gzip())
+	e.Use(middleware.Recover())
 
 	farmGroup := e.Group("/farms")
-	farmGroup.POST("/", farmHandler.CreateFarm)
+	farmGroup.POST("", farmHandler.CreateFarm)
 	e.Logger.Fatal(e.Start(":8000"))
 
 }

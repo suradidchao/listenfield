@@ -1,9 +1,10 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
-	echo "github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 	"github.com/suradidchao/listenfield/entity"
 	"github.com/suradidchao/listenfield/usecase"
 )
@@ -28,6 +29,7 @@ func (f FarmHandler) CreateFarm(c echo.Context) error {
 	}
 	createdFarm, err := f.farmUsecase.Create(farm, farmPayload.FarmOwnerID)
 	if err != nil {
+		fmt.Println(err)
 		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to create Farm"})
 	}
 	return c.JSON(http.StatusOK, Response{Message: "OK", Data: createdFarm})

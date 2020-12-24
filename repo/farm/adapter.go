@@ -3,6 +3,7 @@ package farm
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/suradidchao/listenfield/entity"
 )
@@ -21,7 +22,7 @@ type MySQLAdapter struct {
 // CreateFarm is a method for inserting farm into mysql db
 func (a MySQLAdapter) CreateFarm(farm entity.Farm, farmerID int) (farmID int, err error) {
 	insertStatement := fmt.Sprintf("INSERT INTO %s VALUES (DEFAULT, ?, ?, ?)", a.table)
-	res, err := a.db.Exec(insertStatement, farm.FarmName, farm.CreatedDate, farmID)
+	res, err := a.db.Exec(insertStatement, farm.FarmName, time.Now(), farmID)
 	if err != nil {
 		return farmID, err
 	}
