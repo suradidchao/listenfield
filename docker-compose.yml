@@ -1,0 +1,25 @@
+version: '3.5'
+services:
+  mysql:
+    container_name: listenfield_mysql
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER=listenfield
+      - MYSQL_PASSWORD=listenfield
+      - MYSQL_DATABASE=listenfield
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - listenfield
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    restart: "always"
+
+networks:
+  listenfield:
+    name: listenfield_local
+    driver: bridge
