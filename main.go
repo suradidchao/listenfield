@@ -34,6 +34,8 @@ func main() {
 	farmRepo := farm.NewRepo(farmSQLAdapter)
 	farmUsecase := usecase.NewFarmUsecase(farmRepo)
 	farmHandler := handler.NewFarmHandler(farmUsecase)
+
+	authorizeHandler := handler.NewAuthorizeHandler()
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Gzip())
@@ -41,6 +43,9 @@ func main() {
 
 	farmGroup := e.Group("/farms")
 	farmGroup.POST("", farmHandler.CreateFarm)
+
+	e.POST("/authorize", authorizeHandler.Authorize)
+
 	e.Logger.Fatal(e.Start(":8000"))
 
 }

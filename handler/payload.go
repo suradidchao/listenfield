@@ -11,3 +11,9 @@ type CreateFarmPayload struct {
 	FarmName    string `json:"farmName"`
 	FarmOwnerID int    `json:"farmOwnerId"`
 }
+
+// AuthorizePayload is a request payload for authorize endpoint
+type AuthorizePayload struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

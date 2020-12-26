@@ -6,17 +6,18 @@ import "time"
 type Farm struct {
 	FarmID      int       `json:"farmId"`
 	FarmName    string    `json:"farmName"`
-	FarmOwner   Farmer    `json:"farmOwner"`
+	FarmOwner   User      `json:"farmOwner"`
 	Fields      []Field   `json:"fields"`
 	Tractors    []Tractor `json:"tractors"`
-	FarmWorkers []Farmer  `json:"farmWorkers"`
+	FarmWorkers []User    `json:"farmWorkers"`
 	CreatedDate time.Time `json:"createdDate"`
 }
 
-// Farmer is a farm entity
-type Farmer struct {
-	FarmerID    int       `json:"farmerId"`
-	FarmerName  string    `json:"farmerName"`
+// User is a farm entity
+type User struct {
+	UserID      int       `json:"farmerId"`
+	Username    string    `json:"username"`
+	Password    string    `json:"password"`
 	CreatedDate time.Time `json:"createdDate"`
 }
 

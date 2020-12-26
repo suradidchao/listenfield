@@ -23,8 +23,8 @@ func (f FarmHandler) CreateFarm(c echo.Context) error {
 
 	farm := entity.Farm{
 		FarmName: farmPayload.FarmName,
-		FarmOwner: entity.Farmer{
-			FarmerID: farmPayload.FarmOwnerID,
+		FarmOwner: entity.User{
+			UserID: farmPayload.FarmOwnerID,
 		},
 	}
 	createdFarm, err := f.farmUsecase.Create(farm, farmPayload.FarmOwnerID)
