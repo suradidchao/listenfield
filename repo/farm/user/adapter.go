@@ -6,13 +6,13 @@ import (
 	"time"
 
 	"github.com/suradidchao/listenfield/entity"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/suradidchao/listenfield/internal/passgen"
 )
 
 // IAdapter is an interface for user adapter
 type IAdapter interface {
 	Create(user entity.User) (uid int, err error)
-	hashPassword(password []byte) (pwd string, err error)
+	GetByUsername(username string) (user entity.User, err error)
 }
 
 // MySQLAdapter is an user adapter for managing Uarm from MYSQL
@@ -24,7 +24,7 @@ type MySQLAdapter struct {
 // Create is an adapter method for creating user in mysql
 func (a MySQLAdapter) Create(user entity.User) (uid int, err error) {
 	insertStmt := fmt.Sprintf("INSERT INTO %s VALUES (DEFAULT, ?, ?, ?, ?)", a.table)
-	hashedPwd, err := a.hashPassword([]byte(user.Password))
+	hashedPwd, err := passgen.HashPassword([]byte(user.Password))
 	if err != nil {
 		return uid, err
 	}
@@ -40,12 +40,15 @@ func (a MySQLAdapter) Create(user entity.User) (uid int, err error) {
 	return uid, nil
 }
 
-func (a MySQLAdapter) hashPassword(password []byte) (pwd string, err error) {
-	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
+// GetByUsername is a method for getting a user from db by username
+func (a MySQLAdapter) GetByUsername(username string) (user entity.User, err error) {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE username=?", a.table)
+	row := a.db.QueryRow(query, username)
+	err = row.Scan(&user.UserID, &user.Username, &user.Password, &user.Email, &user.CreatedDate)
 	if err != nil {
-		return pwd, err
+		return user, err
 	}
-	return string(hash), nil
+	return user, nil
 }
 
 // NewMySQLAdapter is a factory method for user mysqlAdapter

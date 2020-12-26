@@ -36,12 +36,12 @@ func main() {
 	farmUsecase := usecase.NewFarmUsecase(farmRepo)
 	farmHandler := handler.NewFarmHandler(farmUsecase)
 
-	authorizeHandler := handler.NewAuthorizeHandler()
-
 	userSQLAdapter := user.NewMySQLAdapter(mysqlDB)
 	userRepo := user.NewRepo(userSQLAdapter)
 	userUsecase := usecase.NewUserUsecase(userRepo)
 	userHandler := handler.NewUserHandler(userUsecase)
+
+	authorizeHandler := handler.NewAuthorizeHandler(userUsecase)
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Gzip())
