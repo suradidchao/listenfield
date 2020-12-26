@@ -24,7 +24,7 @@ type MySQLAdapter struct {
 // Create is an adapter method for creating user in mysql
 func (a MySQLAdapter) Create(user entity.User) (uid int, err error) {
 	insertStmt := fmt.Sprintf("INSERT INTO %s VALUES (DEFAULT, ?, ?, ?, ?)", a.table)
-	hashedPwd, err := a.hashPassword(user.Pasword)
+	hashedPwd, err := a.hashPassword([]byte(user.Password))
 	if err != nil {
 		return uid, err
 	}
@@ -45,7 +45,7 @@ func (a MySQLAdapter) hashPassword(password []byte) (pwd string, err error) {
 	if err != nil {
 		return pwd, err
 	}
-	return string(hash)
+	return string(hash), nil
 }
 
 // NewMySQLAdapter is a factory method for user mysqlAdapter
