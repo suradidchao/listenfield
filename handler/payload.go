@@ -17,3 +17,10 @@ type AuthorizePayload struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+// UserCreatePayload is a request paylod for create user endpoint
+type UserCreatePayload struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+}

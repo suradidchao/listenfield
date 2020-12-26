@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/suradidchao/listenfield/handler"
 	"github.com/suradidchao/listenfield/repo/farm"
+	"github.com/suradidchao/listenfield/repo/farm/user"
 	"github.com/suradidchao/listenfield/usecase"
 )
 
@@ -36,6 +37,11 @@ func main() {
 	farmHandler := handler.NewFarmHandler(farmUsecase)
 
 	authorizeHandler := handler.NewAuthorizeHandler()
+
+	userSQLAdapter := user.NewMySQLAdapter(mysqlDB)
+	userRepo := user.NewRepo(userSQLAdapter)
+	userUsecase := usecase.NewUserUsecase(userRepo)
+	userHandler := handler.NewUserHandler(userUsecase)
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Gzip())
@@ -45,6 +51,7 @@ func main() {
 	farmGroup.POST("", farmHandler.CreateFarm)
 
 	e.POST("/authorize", authorizeHandler.Authorize)
+	e.POST("/users", userHandler.Create)
 
 	e.Logger.Fatal(e.Start(":8000"))
 

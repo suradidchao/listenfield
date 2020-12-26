@@ -27,10 +27,10 @@ func (a MySQLAdapter) CreateFarm(farm entity.Farm, farmerID int) (farmID int, er
 		return farmID, err
 	}
 	lastID, err := res.LastInsertId()
-	farmID = int(lastID)
 	if err != nil {
 		return farmID, err
 	}
+	farmID = int(lastID)
 	return farmID, nil
 }
 
