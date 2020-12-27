@@ -1,0 +1,10 @@
+
+mysql:
+  host: "localhost"
+  port: 3306
+  db: "listenfield"
+  user: "listenfield"
+  pass: "listenfield"
+
+api:
+  secret: "lDKEroX0AlY+5ZmFyzI2bfu2T8MHsrcXs0pxrhUHQuo="

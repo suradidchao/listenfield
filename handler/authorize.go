@@ -13,6 +13,7 @@ import (
 // AuthorizeHandler is a handler for authorize
 type AuthorizeHandler struct {
 	userUsecase usecase.UserUsecase
+	secret      string
 }
 
 // Authorize is a handler for granting jwt
@@ -52,7 +53,7 @@ func (ah AuthorizeHandler) Authorize(c echo.Context) error {
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
 	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte("listenfield secret"))
+	t, err := token.SignedString([]byte(ah.secret))
 	if err != nil {
 		return err
 	}
@@ -63,8 +64,9 @@ func (ah AuthorizeHandler) Authorize(c echo.Context) error {
 }
 
 // NewAuthorizeHandler is a factory method for authorize handler
-func NewAuthorizeHandler(uuc usecase.UserUsecase) AuthorizeHandler {
+func NewAuthorizeHandler(uuc usecase.UserUsecase, sc string) AuthorizeHandler {
 	return AuthorizeHandler{
 		userUsecase: uuc,
+		secret:      sc,
 	}
 }

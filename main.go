@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/spf13/viper"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -16,13 +17,32 @@ import (
 
 func main() {
 
-	const (
-		mysqlUser   = "listenfield"
-		mysqlPass   = "listenfield"
-		mysqlHost   = "localhost"
-		mysqlPort   = 3306
-		mysqlDBName = "listenfield"
+	env := "local"
+	configPath := fmt.Sprintf("./config/%s/", env)
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(configPath)
+	fmt.Println(configPath)
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(fmt.Errorf("Fatal error config file: %s", err))
+	}
+
+	var (
+		mysqlUser   = viper.GetString("mysql.user")
+		mysqlPass   = viper.GetString("mysql.pass")
+		mysqlHost   = viper.GetString("mysql.host")
+		mysqlPort   = viper.GetInt("mysql.port")
+		mysqlDBName = viper.GetString("mysql.db")
 	)
+
+	apiSecret := viper.GetString("api.secret")
+
+	fmt.Println("MysqlHost:", mysqlHost)
+	fmt.Println("MysqlPort:", mysqlPort)
+	fmt.Println("MysqlUser:", mysqlUser)
+	fmt.Println("MysqlDBName:", mysqlDBName)
 
 	mysqlURI := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", mysqlUser, mysqlPass, mysqlHost, mysqlPort, mysqlDBName)
 	mysqlDB, err := sql.Open("mysql", mysqlURI+"?parseTime=true&charset=utf8")
@@ -41,7 +61,7 @@ func main() {
 	userUsecase := usecase.NewUserUsecase(userRepo)
 	userHandler := handler.NewUserHandler(userUsecase)
 
-	authorizeHandler := handler.NewAuthorizeHandler(userUsecase)
+	authorizeHandler := handler.NewAuthorizeHandler(userUsecase, apiSecret)
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Gzip())
