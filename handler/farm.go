@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 	"github.com/suradidchao/listenfield/entity"
@@ -33,6 +34,26 @@ func (f FarmHandler) CreateFarm(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to create Farm"})
 	}
 	return c.JSON(http.StatusOK, Response{Message: "OK", Data: createdFarm})
+}
+
+// AddWorker is a handler for adding a worker to a farm
+func (f FarmHandler) AddWorker(c echo.Context) error {
+	farmID, err := strconv.Atoi(c.Param("farm_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid farm id"})
+	}
+	var addFarmWorkerPayload AddFarmWorkerPayload
+	if err := c.Bind(&addFarmWorkerPayload); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid payload in the requests"})
+	}
+
+	addFarmWorkerOperationID, err := f.farmUsecase.AddWorker(farmID, addFarmWorkerPayload.WorkerID)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to add worker to a farm"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK", Data: addFarmWorkerOperationID})
 }
 
 // NewFarmHandler is a factory method for farm handler

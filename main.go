@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/suradidchao/listenfield/handler"
 	"github.com/suradidchao/listenfield/repo/farm"
+	"github.com/suradidchao/listenfield/repo/farmworker"
 	"github.com/suradidchao/listenfield/repo/user"
 	"github.com/suradidchao/listenfield/usecase"
 )
@@ -51,9 +52,12 @@ func main() {
 	}
 	defer mysqlDB.Close()
 
+	farmWorkerSQLAdapter := farmworker.NewMySQLAdapter(mysqlDB)
+	farmWorkerRepo := farmworker.NewRepo(farmWorkerSQLAdapter)
+
 	farmSQLAdapter := farm.NewMySQLAdapter(mysqlDB)
 	farmRepo := farm.NewRepo(farmSQLAdapter)
-	farmUsecase := usecase.NewFarmUsecase(farmRepo)
+	farmUsecase := usecase.NewFarmUsecase(farmRepo, farmWorkerRepo)
 	farmHandler := handler.NewFarmHandler(farmUsecase)
 
 	userSQLAdapter := user.NewMySQLAdapter(mysqlDB)
@@ -61,7 +65,8 @@ func main() {
 	userUsecase := usecase.NewUserUsecase(userRepo)
 	userHandler := handler.NewUserHandler(userUsecase)
 
-	authorizeHandler := handler.NewAuthorizeHandler(userUsecase, apiSecret)
+	authorizeUsecase := usecase.NewAuthorizeUsecase(userRepo, apiSecret)
+	authorizeHandler := handler.NewAuthorizeHandler(authorizeUsecase)
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Gzip())
@@ -69,6 +74,7 @@ func main() {
 
 	farmGroup := e.Group("/farms")
 	farmGroup.POST("", farmHandler.CreateFarm)
+	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker)
 
 	e.POST("/authorize", authorizeHandler.Authorize)
 	e.POST("/users", userHandler.Create)
