@@ -2,17 +2,16 @@ package usecase
 
 import (
 	"errors"
-	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/suradidchao/listenfield/internal/jwtgen"
 	"github.com/suradidchao/listenfield/internal/passgen"
 	"github.com/suradidchao/listenfield/repo/user"
 )
 
 // AuthUsecase is a collection of usecases about auth
 type AuthUsecase struct {
-	userRepo user.IRepo
-	secret   string
+	userRepo     user.IRepo
+	jwtGenerator jwtgen.IJWTGenerator
 }
 
 // Authenticate is an  usecase for authorizing user
@@ -27,17 +26,7 @@ func (auc AuthUsecase) Authenticate(username string, password string) (token str
 		return token, errors.New("Unauthorized access")
 	}
 
-	// Create token
-	jwtToken := jwt.New(jwt.SigningMethodHS256)
-	// Set claims
-	claims := jwtToken.Claims.(jwt.MapClaims)
-	claims["username"] = user.Username
-	claims["ownedFarmIds"] = user.OwnedFarmIDs
-	claims["workingFarmIds"] = user.WorkingFarmIDs
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	// Generate encoded token and send it as response.
-	token, err = jwtToken.SignedString([]byte(auc.secret))
+	token, err = auc.jwtGenerator.Gen(user.Username, user.OwnedFarmIDs, user.WorkingFarmIDs)
 	if err != nil {
 		return token, err
 	}
@@ -46,9 +35,9 @@ func (auc AuthUsecase) Authenticate(username string, password string) (token str
 }
 
 // NewAuthUsecase is a factory method for AuthorizeUsecase
-func NewAuthUsecase(ur user.IRepo, s string) AuthUsecase {
+func NewAuthUsecase(ur user.IRepo, jwtGen jwtgen.IJWTGenerator) AuthUsecase {
 	return AuthUsecase{
-		userRepo: ur,
-		secret:   s,
+		userRepo:     ur,
+		jwtGenerator: jwtGen,
 	}
 }

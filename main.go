@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/suradidchao/listenfield/handler"
+	"github.com/suradidchao/listenfield/internal/jwtgen"
 	"github.com/suradidchao/listenfield/repo/farm"
 	"github.com/suradidchao/listenfield/repo/farmworker"
 	"github.com/suradidchao/listenfield/repo/user"
@@ -65,7 +66,8 @@ func main() {
 	userUsecase := usecase.NewUserUsecase(userRepo)
 	userHandler := handler.NewUserHandler(userUsecase)
 
-	authUsecase := usecase.NewAuthUsecase(userRepo, apiSecret)
+	jwtGenerator := jwtgen.NewJWTGenerator(apiSecret)
+	authUsecase := usecase.NewAuthUsecase(userRepo, jwtGenerator)
 	authHandler := handler.NewAuthHandler(authUsecase)
 	e := echo.New()
 	e.Use(middleware.Logger())
