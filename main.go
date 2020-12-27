@@ -72,11 +72,13 @@ func main() {
 	e.Use(middleware.Gzip())
 	e.Use(middleware.Recover())
 
+	isLogin := middleware.JWT([]byte(apiSecret))
+
 	farmGroup := e.Group("/farms")
 	farmGroup.POST("", farmHandler.CreateFarm)
-	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker)
-	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker)
-	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers)
+	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, isLogin)
+	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, isLogin)
+	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, isLogin)
 
 	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)
