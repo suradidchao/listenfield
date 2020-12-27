@@ -79,8 +79,8 @@ func main() {
 
 	farmGroup := e.Group("/farms")
 	farmGroup.POST("", farmHandler.CreateFarm)
-	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, isLogin)
-	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, isLogin)
+	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, isLogin, customMiddleware.AuthorizeFarmAccess)
+	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, isLogin, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, isLogin, customMiddleware.AuthorizeFarmAccess)
 
 	e.POST("/authenticate", authHandler.Authenticate)

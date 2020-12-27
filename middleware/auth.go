@@ -29,12 +29,16 @@ func AuthorizeFarmAccess(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		accessible := canAccessFarm(farmID, ownedFarmIDs)
-		if accessible {
-			if err := next(c); err != nil {
-				c.Error(err)
-			}
+
+		if !accessible {
+			return c.JSON(http.StatusUnauthorized, handler.Response{Message: "Unauthorized"})
 		}
-		return c.JSON(http.StatusInternalServerError, handler.Response{Message: "Not Authorize"})
+
+		err = next(c)
+		if err != nil {
+			c.Error(err)
+		}
+		return nil
 	}
 }
 
