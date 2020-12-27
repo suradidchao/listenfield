@@ -7,8 +7,9 @@ import (
 
 // IAdapter is an interface of farmworker interacting with farmworker in db
 type IAdapter interface {
-	Create(farmID int, userID int) (fwID int, err error)
+	Create(farmID int, userID int) (opID int, err error)
 	GetAllByFarmID(farmID int) (userIDs []int, err error)
+	Delete(farmID int, userID int) (err error)
 }
 
 // MySQLAdapter is a mysql adapter of farmworker
@@ -52,6 +53,16 @@ func (a MySQLAdapter) GetAllByFarmID(farmID int) (userIDs []int, err error) {
 		}
 	}
 	return userIDs, nil
+}
+
+// Delete a farm worker from a farm
+func (a MySQLAdapter) Delete(farmID int, userID int) (err error) {
+	deleteStmt := fmt.Sprintf("DELETE FROM %s WHERE farm_id=? AND user_id=?", a.table)
+	_, err = a.db.Exec(deleteStmt, farmID, userID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // NewMySQLAdapter is a factory method for farmworker mysql adapter

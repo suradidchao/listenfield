@@ -56,6 +56,28 @@ func (f FarmHandler) AddWorker(c echo.Context) error {
 	return c.JSON(http.StatusOK, Response{Message: "OK", Data: addFarmWorkerOperationID})
 }
 
+// DeleteWorker is a handler for deleting a worker from a farm
+func (f FarmHandler) DeleteWorker(c echo.Context) error {
+	farmID, err := strconv.Atoi(c.Param("farm_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid farm id"})
+	}
+
+	farmworkerID, err := strconv.Atoi(c.Param("farmworker_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid farmworker id"})
+	}
+
+	err = f.farmUsecase.DeleteWorker(farmID, farmworkerID)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to delete a worker from a farm"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK"})
+}
+
 // GetAllWorkers is a handler for getting all workers in a farm
 func (f FarmHandler) GetAllWorkers(c echo.Context) error {
 	farmID, err := strconv.Atoi(c.Param("farm_id"))
