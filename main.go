@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/suradidchao/listenfield/handler"
 	"github.com/suradidchao/listenfield/repo/farm"
-	"github.com/suradidchao/listenfield/repo/farm/user"
+	"github.com/suradidchao/listenfield/repo/user"
 	"github.com/suradidchao/listenfield/usecase"
 )
 
