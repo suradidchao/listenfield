@@ -39,7 +39,7 @@ func (ah AuthorizeHandler) Authorize(c echo.Context) error {
 	// JWT claims
 	// {
 	// 	"username": "suradid.c",
-	// 	"ownFarmId": 1234,
+	// 	"ownFarmIds": [],
 	// 	"workingFarmIds": [],
 	//	"exp": 1235123
 	// }
@@ -47,7 +47,7 @@ func (ah AuthorizeHandler) Authorize(c echo.Context) error {
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["username"] = user.Username
-	claims["ownFarmId"] = 0
+	claims["ownFarmId"] = []int{1826, 1827}
 	claims["workingFarmIds"] = []int{1824, 1825}
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
