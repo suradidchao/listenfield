@@ -8,15 +8,13 @@ import (
 
 // jwtCustomClaims are custom claims extending default ones.
 type jwtCustomClaims struct {
-	Username       string `json:"username"`
-	OwnedFarmIDs   []int  `json:"ownedFarmIds"`
-	WorkingFarmIDs []int  `json:"workingFarmIds"`
+	CustomClaim
 	jwt.StandardClaims
 }
 
 // IJWTGenerator is an interface of JWT Generator
 type IJWTGenerator interface {
-	Gen(username string, ownedFarmIDs []int, workingFarmIDs []int) (jwt string, err error)
+	Gen(claim CustomClaim) (jwt string, err error)
 }
 
 // JWTGenerator is an implementation of JWT Generator interface
@@ -25,12 +23,10 @@ type JWTGenerator struct {
 }
 
 // Gen is a method for generating jwt token
-func (g JWTGenerator) Gen(username string, ownedFarmIDs []int, workingFarmIDs []int) (t string, err error) {
+func (g JWTGenerator) Gen(claim CustomClaim) (t string, err error) {
 	// Set custom claims
 	claims := &jwtCustomClaims{
-		username,
-		ownedFarmIDs,
-		workingFarmIDs,
+		claim,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 		},

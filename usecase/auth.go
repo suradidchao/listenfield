@@ -26,7 +26,8 @@ func (auc AuthUsecase) Authenticate(username string, password string) (token str
 		return token, errors.New("Unauthorized access")
 	}
 
-	token, err = auc.jwtGenerator.Gen(user.Username, user.OwnedFarmIDs, user.WorkingFarmIDs)
+	claim := jwtgen.NewCustomClaim(user.Username, user.OwnedFarmIDs, user.WorkingFarmIDs)
+	token, err = auc.jwtGenerator.Gen(claim)
 	if err != nil {
 		return token, err
 	}
