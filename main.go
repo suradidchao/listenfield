@@ -77,11 +77,11 @@ func main() {
 
 	isLogin := middleware.JWT([]byte(apiSecret))
 
-	farmGroup := e.Group("/farms")
+	farmGroup := e.Group("/farms", isLogin)
 	farmGroup.POST("", farmHandler.CreateFarm)
-	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, isLogin, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, isLogin, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, isLogin, customMiddleware.AuthorizeFarmAccess)
+	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, customMiddleware.AuthorizeFarmAccess)
+	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, customMiddleware.AuthorizeFarmAccess)
+	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, customMiddleware.AuthorizeFarmAccess)
 
 	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)
