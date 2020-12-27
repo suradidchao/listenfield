@@ -15,11 +15,13 @@ type Farm struct {
 
 // User is a farm entity
 type User struct {
-	UserID      int       `json:"UserId"`
-	Username    string    `json:"username"`
-	Password    string    `json:"password"`
-	Email       string    `json:"email"`
-	CreatedDate time.Time `json:"createdDate"`
+	UserID         int       `json:"UserId"`
+	Username       string    `json:"username"`
+	Password       string    `json:"password"`
+	Email          string    `json:"email"`
+	OwnedFarmIDs   []int     `json:"ownedFarmIds"`
+	WorkingFarmIDs []int     `json:"workingFarmIds"`
+	CreatedDate    time.Time `json:"createdDate"`
 }
 
 // Tractor is a farm entity

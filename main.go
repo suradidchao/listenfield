@@ -61,12 +61,12 @@ func main() {
 	farmHandler := handler.NewFarmHandler(farmUsecase)
 
 	userSQLAdapter := user.NewMySQLAdapter(mysqlDB)
-	userRepo := user.NewRepo(userSQLAdapter)
+	userRepo := user.NewRepo(userSQLAdapter, farmSQLAdapter, farmWorkerSQLAdapter)
 	userUsecase := usecase.NewUserUsecase(userRepo)
 	userHandler := handler.NewUserHandler(userUsecase)
 
-	authorizeUsecase := usecase.NewAuthorizeUsecase(userRepo, apiSecret)
-	authorizeHandler := handler.NewAuthorizeHandler(authorizeUsecase)
+	authUsecase := usecase.NewAuthUsecase(userRepo, apiSecret)
+	authHandler := handler.NewAuthHandler(authUsecase)
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Gzip())
@@ -78,7 +78,7 @@ func main() {
 	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker)
 	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers)
 
-	e.POST("/authorize", authorizeHandler.Authorize)
+	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)
 
 	e.Logger.Fatal(e.Start(":8000"))

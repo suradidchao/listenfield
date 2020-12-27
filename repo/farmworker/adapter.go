@@ -9,6 +9,7 @@ import (
 type IAdapter interface {
 	Create(farmID int, userID int) (opID int, err error)
 	GetAllByFarmID(farmID int) (userIDs []int, err error)
+	GetFarmIDsByUserID(userID int) (farmIDs []int, err error)
 	Delete(farmID int, userID int) (err error)
 }
 
@@ -31,6 +32,28 @@ func (a MySQLAdapter) Create(farmID int, userID int) (fwID int, err error) {
 	}
 	fwID = int(lastInsertID)
 	return fwID, nil
+}
+
+// GetFarmIDsByUserID is a method for getting all farm ids of a user
+func (a MySQLAdapter) GetFarmIDsByUserID(userID int) (farmIDs []int, err error) {
+	query := fmt.Sprintf("SELECT id FROM %s WHERE user_id=?", a.table)
+	rows, err := a.db.Query(query, userID)
+	if err != nil {
+		return farmIDs, err
+	}
+	farmIDs = []int{}
+	for rows.Next() {
+		var farmID int
+		switch err = rows.Scan(&farmID); err {
+		case sql.ErrNoRows:
+			return farmIDs, err
+		case nil:
+			farmIDs = append(farmIDs, farmID)
+		default:
+			return farmIDs, err
+		}
+	}
+	return farmIDs, nil
 }
 
 // GetAllByFarmID is a method for getting all farm workers of a farm
