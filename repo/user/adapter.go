@@ -42,7 +42,7 @@ func (a MySQLAdapter) Create(user entity.User) (uid int, err error) {
 
 // GetByUsername is a method for getting a user from db by username
 func (a MySQLAdapter) GetByUsername(username string) (user entity.User, err error) {
-	query := fmt.Sprintf("SELECT * FROM %s WHERE username=?", a.table)
+	query := fmt.Sprintf("SELECT id, username, password, email, created_date FROM %s WHERE username=?", a.table)
 	row := a.db.QueryRow(query, username)
 	err = row.Scan(&user.UserID, &user.Username, &user.Password, &user.Email, &user.CreatedDate)
 	if err != nil {
