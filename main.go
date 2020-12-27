@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/suradidchao/listenfield/handler"
 	"github.com/suradidchao/listenfield/internal/jwtgen"
+	customMiddleware "github.com/suradidchao/listenfield/middleware"
 	"github.com/suradidchao/listenfield/repo/farm"
 	"github.com/suradidchao/listenfield/repo/farmworker"
 	"github.com/suradidchao/listenfield/repo/user"
@@ -80,7 +81,7 @@ func main() {
 	farmGroup.POST("", farmHandler.CreateFarm)
 	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, isLogin)
 	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, isLogin)
-	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, isLogin)
+	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, isLogin, customMiddleware.AuthorizeFarmAccess)
 
 	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)
