@@ -22,6 +22,11 @@ func (fc FarmUsecase) AddWorker(farmID int, workerID int) (fwID int, err error) 
 	return fc.farmWorkerRepo.Create(farmID, workerID)
 }
 
+// GetAllWorkers is a usecase for adding worker to farm
+func (fc FarmUsecase) GetAllWorkers(farmID int) (userIDs []int, err error) {
+	return fc.farmWorkerRepo.GetAllByFarmID(farmID)
+}
+
 // NewFarmUsecase is a factory method for farm usecase
 func NewFarmUsecase(fr farm.IRepo, fwr farmworker.IRepo) FarmUsecase {
 	return FarmUsecase{

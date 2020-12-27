@@ -56,6 +56,22 @@ func (f FarmHandler) AddWorker(c echo.Context) error {
 	return c.JSON(http.StatusOK, Response{Message: "OK", Data: addFarmWorkerOperationID})
 }
 
+// GetAllWorkers is a handler for getting all workers in a farm
+func (f FarmHandler) GetAllWorkers(c echo.Context) error {
+	farmID, err := strconv.Atoi(c.Param("farm_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid farm id"})
+	}
+
+	farmWorkerIDs, err := f.farmUsecase.GetAllWorkers(farmID)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to get all workers of a farm"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK", Data: farmWorkerIDs})
+}
+
 // NewFarmHandler is a factory method for farm handler
 func NewFarmHandler(fu usecase.FarmUsecase) FarmHandler {
 	return FarmHandler{
