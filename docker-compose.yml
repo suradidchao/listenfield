@@ -20,7 +20,9 @@ services:
     restart: "always"
   api:
     container_name: listenfield_api
-    build: .
+    build:
+      context: .
+      dockerfile: app/Dockerfile
     ports:
       - 8000:8000
     networks:

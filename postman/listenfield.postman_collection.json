@@ -6,6 +6,21 @@
 	},
 	"item": [
 		{
+			"name": "Welcome",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-uri}}",
+					"host": [
+						"{{base-uri}}"
+					]
+				},
+				"description": "Root endpoint"
+			},
+			"response": []
+		},
+		{
 			"name": "Create User",
 			"request": {
 				"auth": {
@@ -15,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"suvinai\",\n    \"password\": \"chao\",\n    \"email\": \"suvinai@gmail.com\"\n}",
+					"raw": "{\n    \"username\": \"jirayu\",\n    \"password\": \"chao\",\n    \"email\": \"chao.suradid@gmail.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

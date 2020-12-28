@@ -106,7 +106,7 @@ func main() {
 	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)
 	e.GET("/", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, "Welcome to listenfield!!!")
+		return c.JSON(http.StatusOK, handler.Response{Message: "Welcome to listenfield!!!"})
 	})
 
 	e.Logger.Fatal(e.Start(":8000"))
