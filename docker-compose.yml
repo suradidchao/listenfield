@@ -18,6 +18,14 @@ services:
         max-size: "50m"
         max-file: "10"
     restart: "always"
+  api:
+    container_name: listenfield_api
+    build: .
+    ports:
+      - 8000:8000
+    networks:
+      - listenfield
+    restart: "always"
 
 networks:
   listenfield:

@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
@@ -28,7 +29,6 @@ func main() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(configPath)
-	fmt.Println(configPath)
 
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -105,6 +105,9 @@ func main() {
 
 	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)
+	e.GET("/", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, "Welcome to listenfield!!!")
+	})
 
 	e.Logger.Fatal(e.Start(":8000"))
 
