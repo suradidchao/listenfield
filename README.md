@@ -7,15 +7,12 @@ Listenfield API Assignments
 - [Docker](https://www.docker.com/get-started)
 
 
-## Run App
+
+
+## Run App in dev env
 
 ```sh
 make dev-start
-```
-
-## Seed data to database
-
-```sh
 make seed-data
 ```
 
