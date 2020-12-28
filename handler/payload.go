@@ -42,3 +42,12 @@ type AddFieldPayload struct {
 	Status    string  `json:"status"`
 	Area      float64 `json:"area"`
 }
+
+// UpdateFieldPayload is a request payload for adding field to a farm endpoint
+type UpdateFieldPayload struct {
+	FieldName string  `json:"fieldName"`
+	FarmID    int     `json:"farmId"`
+	Crop      string  `json:"crop"`
+	Status    string  `json:"status"`
+	Area      float64 `json:"area"`
+}

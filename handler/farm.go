@@ -179,6 +179,34 @@ func (f FarmHandler) DeleteField(c echo.Context) error {
 	return c.JSON(http.StatusOK, Response{Message: "OK"})
 }
 
+// UpdateField is a handler for adding a tractor to a farm
+func (f FarmHandler) UpdateField(c echo.Context) error {
+	fieldID, err := strconv.Atoi(c.Param("field_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid field id"})
+	}
+	var updateFieldPayload UpdateFieldPayload
+	if err := c.Bind(&updateFieldPayload); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid payload in the requests"})
+	}
+
+	field := entity.Field{
+		FieldName: updateFieldPayload.FieldName,
+		FarmID:    updateFieldPayload.FarmID,
+		Crop:      updateFieldPayload.Crop,
+		Status:    updateFieldPayload.Status,
+		Area:      updateFieldPayload.Area,
+	}
+
+	err = f.farmUsecase.UpdateField(fieldID, field)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to update field"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK"})
+}
+
 // NewFarmHandler is a factory method for farm handler
 func NewFarmHandler(fu usecase.FarmUsecase) FarmHandler {
 	return FarmHandler{

@@ -12,6 +12,7 @@ import (
 type IAdapter interface {
 	Create(field entity.Field) (fieldID int, err error)
 	Delete(fieldID int) (err error)
+	Update(fieldID int, field entity.Field) (err error)
 }
 
 // MySQLAdapter is a mysql adapter of field
@@ -39,6 +40,16 @@ func (a MySQLAdapter) Create(field entity.Field) (fieldID int, err error) {
 func (a MySQLAdapter) Delete(fieldID int) (err error) {
 	deleteStmt := fmt.Sprintf("DELETE FROM %s WHERE id=?", a.table)
 	_, err = a.db.Exec(deleteStmt, fieldID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Update is a method for updating field values
+func (a MySQLAdapter) Update(fieldID int, field entity.Field) (err error) {
+	updateStmt := fmt.Sprintf("UPDATE %s SET field_name = ?, farm_id = ?, crop = ?, status = ?, area = ? WHERE id = ?", a.table)
+	_, err = a.db.Exec(updateStmt, field.FieldName, field.FarmID, field.Crop, field.Status, field.Area, fieldID)
 	if err != nil {
 		return err
 	}
