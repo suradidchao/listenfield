@@ -11,6 +11,7 @@ import (
 // IAdapter is an interface of field interacting with field in db
 type IAdapter interface {
 	Create(field entity.Field) (fieldID int, err error)
+	Delete(fieldID int) (err error)
 }
 
 // MySQLAdapter is a mysql adapter of field
@@ -32,6 +33,16 @@ func (a MySQLAdapter) Create(field entity.Field) (fieldID int, err error) {
 	}
 	fieldID = int(lastInsertID)
 	return fieldID, nil
+}
+
+// Delete a field
+func (a MySQLAdapter) Delete(fieldID int) (err error) {
+	deleteStmt := fmt.Sprintf("DELETE FROM %s WHERE id=?", a.table)
+	_, err = a.db.Exec(deleteStmt, fieldID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // NewMySQLAdapter is a factory method for field mysql adapter

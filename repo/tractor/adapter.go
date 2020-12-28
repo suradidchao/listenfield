@@ -37,7 +37,7 @@ func (a MySQLAdapter) Create(tractor entity.Tractor) (tractorID int, err error) 
 
 // Delete a tractor
 func (a MySQLAdapter) Delete(tractorID int) (err error) {
-	deleteStmt := fmt.Sprintf("DELETE FROM %s WHERE tractor_id=?", a.table)
+	deleteStmt := fmt.Sprintf("DELETE FROM %s WHERE id=?", a.table)
 	_, err = a.db.Exec(deleteStmt, tractorID)
 	if err != nil {
 		return err

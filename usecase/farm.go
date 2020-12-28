@@ -51,6 +51,11 @@ func (fc FarmUsecase) AddField(field entity.Field) (fID int, err error) {
 	return fc.fieldRepo.Create(field)
 }
 
+// DeleteField is a usecase for deleting a field from a farm
+func (fc FarmUsecase) DeleteField(fieldID int) (err error) {
+	return fc.fieldRepo.Delete(fieldID)
+}
+
 // NewFarmUsecase is a factory method for farm usecase
 func NewFarmUsecase(fr farm.IRepo, fwr farmworker.IRepo, tr tractor.IRepo, fdr field.IRepo) FarmUsecase {
 	return FarmUsecase{

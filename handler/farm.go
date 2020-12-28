@@ -163,6 +163,22 @@ func (f FarmHandler) AddField(c echo.Context) error {
 	return c.JSON(http.StatusOK, Response{Message: "OK", Data: fieldID})
 }
 
+// DeleteField is a handler for deleting a field from a farm
+func (f FarmHandler) DeleteField(c echo.Context) error {
+	fieldID, err := strconv.Atoi(c.Param("field_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid field id"})
+	}
+
+	err = f.farmUsecase.DeleteField(fieldID)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to delete field from a farm"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK"})
+}
+
 // NewFarmHandler is a factory method for farm handler
 func NewFarmHandler(fu usecase.FarmUsecase) FarmHandler {
 	return FarmHandler{
