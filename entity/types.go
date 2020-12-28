@@ -35,8 +35,11 @@ type Tractor struct {
 // Field is a farm entity
 type Field struct {
 	FieldID     int       `json:"fieldId"`
+	FieldName   string    `json:"fieldName"`
+	FarmID      int       `json:"farmId"`
 	Crop        string    `json:"crop"`
 	Status      string    `json:"status"`
+	Area        float64   `json:"area"`
 	CreatedDate time.Time `json:"createdDate"`
 }
 

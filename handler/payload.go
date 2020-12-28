@@ -34,3 +34,11 @@ type AddFarmWorkerPayload struct {
 type AddTractorPayload struct {
 	TractorName string `json:"tractorName"`
 }
+
+// AddFieldPayload is a request payload for adding field to a farm endpoint
+type AddFieldPayload struct {
+	FieldName string  `json:"fieldName"`
+	Crop      string  `json:"crop"`
+	Status    string  `json:"status"`
+	Area      float64 `json:"area"`
+}

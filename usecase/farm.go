@@ -4,6 +4,7 @@ import (
 	"github.com/suradidchao/listenfield/entity"
 	"github.com/suradidchao/listenfield/repo/farm"
 	"github.com/suradidchao/listenfield/repo/farmworker"
+	"github.com/suradidchao/listenfield/repo/field"
 	"github.com/suradidchao/listenfield/repo/tractor"
 )
 
@@ -12,6 +13,7 @@ type FarmUsecase struct {
 	farmRepo       farm.IRepo
 	farmWorkerRepo farmworker.IRepo
 	tractorRepo    tractor.IRepo
+	fieldRepo      field.IRepo
 }
 
 // Create is a create farm usecase
@@ -44,11 +46,17 @@ func (fc FarmUsecase) DeleteTractor(tractorID int) (err error) {
 	return fc.tractorRepo.Delete(tractorID)
 }
 
+// AddField is a usecase for adding field to farm
+func (fc FarmUsecase) AddField(field entity.Field) (fID int, err error) {
+	return fc.fieldRepo.Create(field)
+}
+
 // NewFarmUsecase is a factory method for farm usecase
-func NewFarmUsecase(fr farm.IRepo, fwr farmworker.IRepo, tr tractor.IRepo) FarmUsecase {
+func NewFarmUsecase(fr farm.IRepo, fwr farmworker.IRepo, tr tractor.IRepo, fdr field.IRepo) FarmUsecase {
 	return FarmUsecase{
 		farmRepo:       fr,
 		farmWorkerRepo: fwr,
 		tractorRepo:    tr,
+		fieldRepo:      fdr,
 	}
 }
