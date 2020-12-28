@@ -24,7 +24,7 @@ type MySQLAdapter struct {
 // Create is a method for inserting field to farm in field table
 func (a MySQLAdapter) Create(field entity.Field) (fieldID int, err error) {
 	insertStmt := fmt.Sprintf("INSERT INTO %s VALUES (DEFAULT, ?, ?, ?, ?, ?)", a.table)
-	res, err := a.db.Exec(insertStmt, field.FarmID, field.Crop, field.Area, time.Now(), field.FieldName)
+	res, err := a.db.Exec(insertStmt, field.FarmID, field.FieldName, field.Crop, field.Area, time.Now())
 	if err != nil {
 		return fieldID, err
 	}

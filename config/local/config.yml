@@ -1,6 +1,6 @@
 
 mysql:
-  host: "localhost"
+  host: "listenfield_mysql"
   port: 3306
   db: "listenfield"
   user: "listenfield"

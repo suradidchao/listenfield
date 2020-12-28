@@ -23,7 +23,7 @@ type MySQLAdapter struct {
 // CreateFarm is a method for inserting farm into mysql db
 func (a MySQLAdapter) CreateFarm(farm entity.Farm, farmerID int) (farmID int, err error) {
 	insertStatement := fmt.Sprintf("INSERT INTO %s VALUES (DEFAULT, ?, ?, ?)", a.table)
-	res, err := a.db.Exec(insertStatement, farm.FarmName, time.Now(), farmID)
+	res, err := a.db.Exec(insertStatement, farm.FarmName, farmerID, time.Now())
 	if err != nil {
 		return farmID, err
 	}
