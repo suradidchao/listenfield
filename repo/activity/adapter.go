@@ -11,6 +11,7 @@ import (
 // IAdapter is an interface for activity adapter
 type IAdapter interface {
 	Create(actvity entity.Activity) (aid int, err error)
+	AggCostAndRevenueByFarmID(farmID int, startDate time.Time, endDate time.Time) (cr CostAndRevenue, err error)
 }
 
 // MySQLAdapter is an activity adapter for managing activity from MYSQL
@@ -32,6 +33,17 @@ func (a MySQLAdapter) Create(activity entity.Activity) (aid int, err error) {
 	}
 	aid = int(lastInsertID)
 	return aid, nil
+}
+
+// AggCostAndRevenueByFarmID is an adapter method for aggregate cost summary from mysql
+func (a MySQLAdapter) AggCostAndRevenueByFarmID(farmID int, startDate time.Time, endDate time.Time) (cr CostAndRevenue, err error) {
+	query := fmt.Sprintf("SELECT SUM(cost), SUM(revenue) FROM %s WHERE created_date > ? AND created_date < ?", a.table)
+	row := a.db.QueryRow(query, startDate.Format("2006-01-02 15:04:05"), endDate.Format("2006-01-02 15:04:05"))
+	err = row.Scan(&cr.Cost, &cr.Revenue)
+	if err != nil {
+		return cr, err
+	}
+	return cr, nil
 }
 
 // NewMySQLAdapter is a factory method for activity mysqlAdapter

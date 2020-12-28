@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo"
 	"github.com/suradidchao/listenfield/entity"
@@ -263,6 +264,36 @@ func (f FarmHandler) AddActivity(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to add activity"})
 	}
 	return c.JSON(http.StatusOK, Response{Message: "OK", Data: activityID})
+}
+
+// GetCostSummary is a handler for getting cost summary of activities in a farm within specified time period
+func (f FarmHandler) GetCostSummary(c echo.Context) error {
+	farmID, err := strconv.Atoi(c.Param("farm_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid farm id"})
+	}
+
+	start, err := strconv.ParseInt(c.QueryParam("start"), 10, 64)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid query parameter"})
+	}
+	end, err := strconv.ParseInt(c.QueryParam("end"), 10, 64)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid query parameter"})
+	}
+
+	startDate := time.Unix(start, 0)
+	endDate := time.Unix(end, 0)
+
+	costSummary, err := f.farmUsecase.GetCostSummary(farmID, startDate, endDate)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to get cost summary of a farm"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK", Data: costSummary})
 }
 
 // NewFarmHandler is a factory method for farm handler

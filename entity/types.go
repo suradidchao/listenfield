@@ -55,3 +55,10 @@ type Activity struct {
 	Revenue      float64   `json:"revenue"`
 	CreatedDate  time.Time `json:"createdDate"`
 }
+
+// CostSummary is an CostSummary entity
+type CostSummary struct {
+	Revenue float64 `json:"revenue"`
+	Cost    float64 `json:"cost"`
+	Profit  float64 `json:"profit"`
+}

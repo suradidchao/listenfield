@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"time"
+
 	"github.com/suradidchao/listenfield/entity"
 	"github.com/suradidchao/listenfield/repo/activity"
 	"github.com/suradidchao/listenfield/repo/farm"
@@ -90,6 +92,20 @@ func (fc FarmUsecase) AddActivity(activity entity.Activity) (aID int, err error)
 	activity.Cost = cost
 	activity.Revenue = revenue
 	return fc.activityRepo.Create(activity)
+}
+
+// GetCostSummary is a usecase for getting cost summary of a farm within specified time period
+func (fc FarmUsecase) GetCostSummary(farmID int, startDate time.Time, endDate time.Time) (cs entity.CostSummary, err error) {
+	costAndRevenue, err := fc.activityRepo.GetCostRevenue(farmID, startDate, endDate)
+	if err != nil {
+		return cs, err
+	}
+	cs = entity.CostSummary{
+		Cost:    costAndRevenue.Cost,
+		Revenue: costAndRevenue.Revenue,
+		Profit:  costAndRevenue.Revenue - costAndRevenue.Cost,
+	}
+	return cs, nil
 }
 
 // NewFarmUsecase is a factory method for farm usecase
