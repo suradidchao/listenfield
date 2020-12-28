@@ -3,9 +3,9 @@ package usecase
 import (
 	"errors"
 
-	"github.com/suradidchao/listenfield/internal/jwtgen"
-	"github.com/suradidchao/listenfield/internal/passgen"
-	"github.com/suradidchao/listenfield/repo/user"
+	"github.com/suradidchao/listenfield/app/lib/jwtgen"
+	"github.com/suradidchao/listenfield/app/lib/passgen"
+	"github.com/suradidchao/listenfield/app/repo/user"
 )
 
 // AuthUsecase is a collection of usecases about auth

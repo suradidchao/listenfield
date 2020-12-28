@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/suradidchao/listenfield/entity"
-	"github.com/suradidchao/listenfield/internal/passgen"
+	"github.com/suradidchao/listenfield/app/entity"
+	"github.com/suradidchao/listenfield/app/lib/passgen"
 )
 
 // IAdapter is an interface for user adapter

@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"github.com/suradidchao/listenfield/entity"
-	"github.com/suradidchao/listenfield/usecase"
+	"github.com/suradidchao/listenfield/app/entity"
+	"github.com/suradidchao/listenfield/app/usecase"
 )
 
 // FarmHandler is a farm handler

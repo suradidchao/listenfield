@@ -10,16 +10,16 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/suradidchao/listenfield/handler"
-	"github.com/suradidchao/listenfield/internal/jwtgen"
-	customMiddleware "github.com/suradidchao/listenfield/middleware"
-	"github.com/suradidchao/listenfield/repo/activity"
-	"github.com/suradidchao/listenfield/repo/farm"
-	"github.com/suradidchao/listenfield/repo/farmworker"
-	"github.com/suradidchao/listenfield/repo/field"
-	"github.com/suradidchao/listenfield/repo/tractor"
-	"github.com/suradidchao/listenfield/repo/user"
-	"github.com/suradidchao/listenfield/usecase"
+	"github.com/suradidchao/listenfield/app/handler"
+	"github.com/suradidchao/listenfield/app/lib/jwtgen"
+	customMiddleware "github.com/suradidchao/listenfield/app/middleware"
+	"github.com/suradidchao/listenfield/app/repo/activity"
+	"github.com/suradidchao/listenfield/app/repo/farm"
+	"github.com/suradidchao/listenfield/app/repo/farmworker"
+	"github.com/suradidchao/listenfield/app/repo/field"
+	"github.com/suradidchao/listenfield/app/repo/tractor"
+	"github.com/suradidchao/listenfield/app/repo/user"
+	"github.com/suradidchao/listenfield/app/usecase"
 )
 
 func main() {

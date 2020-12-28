@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/suradidchao/listenfield/usecase"
+	"github.com/suradidchao/listenfield/app/usecase"
 )
 
 // AuthHandler is a handler for authorize

@@ -1,8 +1,6 @@
 package farm
 
-import (
-	"github.com/suradidchao/listenfield/entity"
-)
+import "github.com/suradidchao/listenfield/app/entity"
 
 // IRepo is an interface for farm repository
 type IRepo interface {

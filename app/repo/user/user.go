@@ -1,9 +1,9 @@
 package user
 
 import (
-	"github.com/suradidchao/listenfield/entity"
-	"github.com/suradidchao/listenfield/repo/farm"
-	"github.com/suradidchao/listenfield/repo/farmworker"
+	"github.com/suradidchao/listenfield/app/entity"
+	"github.com/suradidchao/listenfield/app/repo/farm"
+	"github.com/suradidchao/listenfield/app/repo/farmworker"
 )
 
 // IRepo is an interface for user repository

@@ -7,7 +7,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
-	"github.com/suradidchao/listenfield/handler"
+	"github.com/suradidchao/listenfield/app/handler"
 )
 
 // AuthorizeFarmOwnerAccess is the middleware function for authorization.

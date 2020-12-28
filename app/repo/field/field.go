@@ -1,8 +1,6 @@
 package field
 
-import (
-	"github.com/suradidchao/listenfield/entity"
-)
+import "github.com/suradidchao/listenfield/app/entity"
 
 // IRepo is an interface for field repository
 type IRepo interface {

@@ -3,7 +3,7 @@ package activity
 import (
 	"time"
 
-	"github.com/suradidchao/listenfield/entity"
+	"github.com/suradidchao/listenfield/app/entity"
 )
 
 // IRepo is an interface for activity repository

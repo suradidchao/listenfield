@@ -3,12 +3,12 @@ package usecase
 import (
 	"time"
 
-	"github.com/suradidchao/listenfield/entity"
-	"github.com/suradidchao/listenfield/repo/activity"
-	"github.com/suradidchao/listenfield/repo/farm"
-	"github.com/suradidchao/listenfield/repo/farmworker"
-	"github.com/suradidchao/listenfield/repo/field"
-	"github.com/suradidchao/listenfield/repo/tractor"
+	"github.com/suradidchao/listenfield/app/entity"
+	"github.com/suradidchao/listenfield/app/repo/activity"
+	"github.com/suradidchao/listenfield/app/repo/farm"
+	"github.com/suradidchao/listenfield/app/repo/farmworker"
+	"github.com/suradidchao/listenfield/app/repo/field"
+	"github.com/suradidchao/listenfield/app/repo/tractor"
 )
 
 // FarmUsecase is a usecase for farm

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/suradidchao/listenfield/entity"
+	"github.com/suradidchao/listenfield/app/entity"
 )
 
 // IAdapter is an interface of field interacting with field in db

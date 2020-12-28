@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/suradidchao/listenfield/entity"
-	"github.com/suradidchao/listenfield/usecase"
+	"github.com/suradidchao/listenfield/app/entity"
+	"github.com/suradidchao/listenfield/app/usecase"
 )
 
 // UserHandler is a handler for user

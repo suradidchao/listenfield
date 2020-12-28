@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/suradidchao/listenfield/entity"
-	"github.com/suradidchao/listenfield/repo/user"
+	"github.com/suradidchao/listenfield/app/entity"
+	"github.com/suradidchao/listenfield/app/repo/user"
 )
 
 // UserUsecase is a usecase for user
