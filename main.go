@@ -14,6 +14,7 @@ import (
 	customMiddleware "github.com/suradidchao/listenfield/middleware"
 	"github.com/suradidchao/listenfield/repo/farm"
 	"github.com/suradidchao/listenfield/repo/farmworker"
+	"github.com/suradidchao/listenfield/repo/tractor"
 	"github.com/suradidchao/listenfield/repo/user"
 	"github.com/suradidchao/listenfield/usecase"
 )
@@ -54,12 +55,15 @@ func main() {
 	}
 	defer mysqlDB.Close()
 
+	tractorSQLAdapter := tractor.NewMySQLAdapter(mysqlDB)
+	tractorRepo := tractor.NewRepo(tractorSQLAdapter)
+
 	farmWorkerSQLAdapter := farmworker.NewMySQLAdapter(mysqlDB)
 	farmWorkerRepo := farmworker.NewRepo(farmWorkerSQLAdapter)
 
 	farmSQLAdapter := farm.NewMySQLAdapter(mysqlDB)
 	farmRepo := farm.NewRepo(farmSQLAdapter)
-	farmUsecase := usecase.NewFarmUsecase(farmRepo, farmWorkerRepo)
+	farmUsecase := usecase.NewFarmUsecase(farmRepo, farmWorkerRepo, tractorRepo)
 	farmHandler := handler.NewFarmHandler(farmUsecase)
 
 	userSQLAdapter := user.NewMySQLAdapter(mysqlDB)
@@ -82,6 +86,7 @@ func main() {
 	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, customMiddleware.AuthorizeFarmAccess)
+	farmGroup.POST("/:farm_id/tractors", farmHandler.AddTractor, customMiddleware.AuthorizeFarmAccess)
 
 	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)

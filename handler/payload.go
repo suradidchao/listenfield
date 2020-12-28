@@ -29,3 +29,8 @@ type UserCreatePayload struct {
 type AddFarmWorkerPayload struct {
 	WorkerID int `json:"workerId"`
 }
+
+// AddTractorPayload is a request payload for adding worker to a farm endpoint
+type AddTractorPayload struct {
+	TractorName string `json:"tractorName"`
+}
