@@ -1,0 +1,550 @@
+{
+	"info": {
+		"_postman_id": "b766b10c-f4e1-4a10-95cb-b4123570f09d",
+		"name": "listenfield",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"suvinai\",\n    \"password\": \"chao\",\n    \"email\": \"suvinai@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Create user is an endpoint for creating user"
+			},
+			"response": []
+		},
+		{
+			"name": "Authentication",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"suradid\",\n    \"password\": \"chao\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"authenticate"
+					]
+				},
+				"description": "Use for generating jwt from username and password"
+			},
+			"response": []
+		},
+		{
+			"name": "Create farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"farmName\": \"jia first farm\",\n    \"farmOwnerId\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/farms",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"farms"
+					]
+				},
+				"description": "Create farm endpoint"
+			},
+			"response": []
+		},
+		{
+			"name": "Add worker to farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"workerId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/workers",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"workers"
+					]
+				},
+				"description": "endpoint for adding a worker to a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Farm Worker from a Farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/workers/1",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"workers",
+						"1"
+					]
+				},
+				"description": "Endpoint for deleting a farm worker from a farm by farm id and a farm worker id"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Farm Worker IDs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/workers",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"workers"
+					]
+				},
+				"description": "Endpoint for getting all farm worker ids by farm id"
+			},
+			"response": []
+		},
+		{
+			"name": "Add tractor to farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tractorName\": \"first tractor\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/tractors",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"tractors"
+					]
+				},
+				"description": "Endpoint for adding a tractor to a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Update tractor in farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tractorName\": \"modified jia tractor\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/tractors/2",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"tractors",
+						"2"
+					]
+				},
+				"description": "Endpoint for updating tractor attributes in a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Deletet tractor from farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tractorName\": \"first tractor\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/tractors/1",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"tractors",
+						"1"
+					]
+				},
+				"description": "Endpoint for adding a tractor to a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add field to farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fieldName\": \"field 1\",\n\t\"crop\": \"corn\",\n\t\"area\": 350.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/fields",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"fields"
+					]
+				},
+				"description": "Endpoint for adding a field to a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Update field in farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fieldName\": \"field 2\",\n    \"farmId\": 1,\n\t\"crop\": \"corn\",\n\t\"area\": 150.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/fields/1",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"fields",
+						"1"
+					]
+				},
+				"description": "Endpoint for updating field attributes in a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete field from farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base-uri}}/farms/1/fields/1",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"fields",
+						"1"
+					]
+				},
+				"description": "Endpoint for deleting a field from a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add activity to a farm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tractorId\": 1,\n\t\"userId\": 4,\n\t\"activityName\": \"sowed\",\n\t\"area\": 150.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/fields/3/activities",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"fields",
+						"3",
+						"activities"
+					]
+				},
+				"description": "Endpoint for farm worker to record activity in a field of a farm"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cost Summary of farm",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-uri}}/farms/1/costsummary?start=1606827600&end=1609376400",
+					"host": [
+						"{{base-uri}}"
+					],
+					"path": [
+						"farms",
+						"1",
+						"costsummary"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "1606827600"
+						},
+						{
+							"key": "end",
+							"value": "1609376400"
+						}
+					]
+				},
+				"description": "Endpoint for getting cost summary of a farm id"
+			},
+			"response": []
+		}
+	]
+}
