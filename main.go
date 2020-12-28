@@ -12,6 +12,7 @@ import (
 	"github.com/suradidchao/listenfield/handler"
 	"github.com/suradidchao/listenfield/internal/jwtgen"
 	customMiddleware "github.com/suradidchao/listenfield/middleware"
+	"github.com/suradidchao/listenfield/repo/activity"
 	"github.com/suradidchao/listenfield/repo/farm"
 	"github.com/suradidchao/listenfield/repo/farmworker"
 	"github.com/suradidchao/listenfield/repo/field"
@@ -65,9 +66,12 @@ func main() {
 	fieldSQLAdapter := field.NewMySQLAdapter(mysqlDB)
 	fieldRepo := field.NewRepo(fieldSQLAdapter)
 
+	activitySQLAdapter := activity.NewMySQLAdapter(mysqlDB)
+	activityRepo := activity.NewRepo(activitySQLAdapter)
+
 	farmSQLAdapter := farm.NewMySQLAdapter(mysqlDB)
 	farmRepo := farm.NewRepo(farmSQLAdapter)
-	farmUsecase := usecase.NewFarmUsecase(farmRepo, farmWorkerRepo, tractorRepo, fieldRepo)
+	farmUsecase := usecase.NewFarmUsecase(farmRepo, farmWorkerRepo, tractorRepo, fieldRepo, activityRepo)
 	farmHandler := handler.NewFarmHandler(farmUsecase)
 
 	userSQLAdapter := user.NewMySQLAdapter(mysqlDB)
@@ -87,15 +91,16 @@ func main() {
 
 	farmGroup := e.Group("/farms", isLogin)
 	farmGroup.POST("", farmHandler.CreateFarm)
-	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.POST("/:farm_id/tractors", farmHandler.AddTractor, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.DELETE("/:farm_id/tractors/:tractor_id", farmHandler.DeleteTractor, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.PUT("/:farm_id/tractors/:tractor_id", farmHandler.UpdateTractor, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.POST("/:farm_id/fields", farmHandler.AddField, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.DELETE("/:farm_id/fields/:field_id", farmHandler.DeleteField, customMiddleware.AuthorizeFarmAccess)
-	farmGroup.PUT("/:farm_id/fields/:field_id", farmHandler.UpdateField, customMiddleware.AuthorizeFarmAccess)
+	farmGroup.POST("/:farm_id/workers", farmHandler.AddWorker, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.DELETE("/:farm_id/workers/:farmworker_id", farmHandler.DeleteWorker, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.POST("/:farm_id/tractors", farmHandler.AddTractor, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.DELETE("/:farm_id/tractors/:tractor_id", farmHandler.DeleteTractor, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.PUT("/:farm_id/tractors/:tractor_id", farmHandler.UpdateTractor, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.POST("/:farm_id/fields", farmHandler.AddField, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.DELETE("/:farm_id/fields/:field_id", farmHandler.DeleteField, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.PUT("/:farm_id/fields/:field_id", farmHandler.UpdateField, customMiddleware.AuthorizeFarmOwnerAccess)
+	farmGroup.POST("/:farm_id/fields/:field_id/activities", farmHandler.AddActivity, customMiddleware.AuthorizeFarmOwnerAndWorkerAccess)
 
 	e.POST("/authenticate", authHandler.Authenticate)
 	e.POST("/users", userHandler.Create)

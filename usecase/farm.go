@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"github.com/suradidchao/listenfield/entity"
+	"github.com/suradidchao/listenfield/repo/activity"
 	"github.com/suradidchao/listenfield/repo/farm"
 	"github.com/suradidchao/listenfield/repo/farmworker"
 	"github.com/suradidchao/listenfield/repo/field"
@@ -14,6 +15,7 @@ type FarmUsecase struct {
 	farmWorkerRepo farmworker.IRepo
 	tractorRepo    tractor.IRepo
 	fieldRepo      field.IRepo
+	activityRepo   activity.IRepo
 }
 
 // Create is a create farm usecase
@@ -66,12 +68,37 @@ func (fc FarmUsecase) UpdateField(fieldID int, field entity.Field) (err error) {
 	return fc.fieldRepo.Update(fieldID, field)
 }
 
+// AddActivity is a usecase for adding activity to farm
+func (fc FarmUsecase) AddActivity(activity entity.Activity) (aID int, err error) {
+	const (
+		PREP       = 10.00
+		SOWED      = 20.00
+		FERTILIZED = 30.00
+		HARVESTED  = 100.00
+	)
+	var cost, revenue float64
+	switch activity.ActivityName {
+	case "prep":
+		cost = cost + activity.Area*PREP
+	case "sowed":
+		cost = cost + activity.Area*SOWED
+	case "fertilized":
+		cost = cost + activity.Area*FERTILIZED
+	case "harvested":
+		revenue = revenue + activity.Area*HARVESTED
+	}
+	activity.Cost = cost
+	activity.Revenue = revenue
+	return fc.activityRepo.Create(activity)
+}
+
 // NewFarmUsecase is a factory method for farm usecase
-func NewFarmUsecase(fr farm.IRepo, fwr farmworker.IRepo, tr tractor.IRepo, fdr field.IRepo) FarmUsecase {
+func NewFarmUsecase(fr farm.IRepo, fwr farmworker.IRepo, tr tractor.IRepo, fdr field.IRepo, ar activity.IRepo) FarmUsecase {
 	return FarmUsecase{
 		farmRepo:       fr,
 		farmWorkerRepo: fwr,
 		tractorRepo:    tr,
 		fieldRepo:      fdr,
+		activityRepo:   ar,
 	}
 }

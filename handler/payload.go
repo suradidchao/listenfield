@@ -55,3 +55,11 @@ type UpdateFieldPayload struct {
 	Crop      string  `json:"crop"`
 	Area      float64 `json:"area"`
 }
+
+// AddActivityPayload is a request payload for adding field to a farm endpoint
+type AddActivityPayload struct {
+	TractorID    int     `json:"tractorId"`
+	UserID       int     `json:"userId"`
+	ActivityName string  `json:"activityName"`
+	Area         float64 `json:"area"`
+}

@@ -42,12 +42,16 @@ type Field struct {
 	CreatedDate time.Time `json:"createdDate"`
 }
 
-// Activity is a farm entity
+// Activity is an activity entity
 type Activity struct {
 	ActivityID   int       `json:"activityId"`
 	FarmID       int       `json:"farmId"`
-	FieldID      int       `json:"fieldId"`
+	Field        Field     `json:"field"`
+	Tractor      Tractor   `json:"tractor"`
+	User         User      `json:"user"`
 	ActivityName string    `json:"activityName"`
+	Area         float64   `json:"area"`
 	Cost         float64   `json:"cost"`
+	Revenue      float64   `json:"revenue"`
 	CreatedDate  time.Time `json:"createdDate"`
 }

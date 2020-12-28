@@ -230,6 +230,41 @@ func (f FarmHandler) UpdateField(c echo.Context) error {
 	return c.JSON(http.StatusOK, Response{Message: "OK"})
 }
 
+// AddActivity is a handler for adding activity to a farm and a field
+func (f FarmHandler) AddActivity(c echo.Context) error {
+	farmID, err := strconv.Atoi(c.Param("farm_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid farm id"})
+	}
+
+	fieldID, err := strconv.Atoi(c.Param("field_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid field id"})
+	}
+	var addActivityPayload AddActivityPayload
+	if err := c.Bind(&addActivityPayload); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid payload in the requests"})
+	}
+
+	activity := entity.Activity{
+		FarmID:       farmID,
+		Field:        entity.Field{FieldID: fieldID},
+		Tractor:      entity.Tractor{TractorID: addActivityPayload.TractorID},
+		User:         entity.User{UserID: addActivityPayload.UserID},
+		ActivityName: addActivityPayload.ActivityName,
+		Area:         addActivityPayload.Area,
+	}
+
+	activityID, err := f.farmUsecase.AddActivity(activity)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to add activity"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK", Data: activityID})
+}
+
 // NewFarmHandler is a factory method for farm handler
 func NewFarmHandler(fu usecase.FarmUsecase) FarmHandler {
 	return FarmHandler{
