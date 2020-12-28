@@ -12,6 +12,7 @@ import (
 type IAdapter interface {
 	Create(tractor entity.Tractor) (tractorID int, err error)
 	Delete(tractorID int) (err error)
+	Update(tractorID int, tractor entity.Tractor) (err error)
 }
 
 // MySQLAdapter is an tractor adapter for operating with tractor from MYSQL
@@ -39,6 +40,16 @@ func (a MySQLAdapter) Create(tractor entity.Tractor) (tractorID int, err error) 
 func (a MySQLAdapter) Delete(tractorID int) (err error) {
 	deleteStmt := fmt.Sprintf("DELETE FROM %s WHERE id=?", a.table)
 	_, err = a.db.Exec(deleteStmt, tractorID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Update is a method for updating tractor attribute in a mysql db
+func (a MySQLAdapter) Update(tractorID int, tractor entity.Tractor) (err error) {
+	updateStmt := fmt.Sprintf("UPDATE %s SET tractor_name = ?, farm_id = ? WHERE id = ?", a.table)
+	_, err = a.db.Exec(updateStmt, tractor.TractorName, tractor.FarmID, tractorID)
 	if err != nil {
 		return err
 	}

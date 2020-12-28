@@ -46,6 +46,11 @@ func (fc FarmUsecase) DeleteTractor(tractorID int) (err error) {
 	return fc.tractorRepo.Delete(tractorID)
 }
 
+// UpdateTractor is a usecase for updating a tractor's attribute in a farm
+func (fc FarmUsecase) UpdateTractor(tractorID int, tractor entity.Tractor) (err error) {
+	return fc.tractorRepo.Update(tractorID, tractor)
+}
+
 // AddField is a usecase for adding field to farm
 func (fc FarmUsecase) AddField(field entity.Field) (fID int, err error) {
 	return fc.fieldRepo.Create(field)

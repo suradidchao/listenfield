@@ -92,6 +92,7 @@ func main() {
 	farmGroup.GET("/:farm_id/workers", farmHandler.GetAllWorkers, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.POST("/:farm_id/tractors", farmHandler.AddTractor, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.DELETE("/:farm_id/tractors/:tractor_id", farmHandler.DeleteTractor, customMiddleware.AuthorizeFarmAccess)
+	farmGroup.PUT("/:farm_id/tractors/:tractor_id", farmHandler.UpdateTractor, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.POST("/:farm_id/fields", farmHandler.AddField, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.DELETE("/:farm_id/fields/:field_id", farmHandler.DeleteField, customMiddleware.AuthorizeFarmAccess)
 	farmGroup.PUT("/:farm_id/fields/:field_id", farmHandler.UpdateField, customMiddleware.AuthorizeFarmAccess)

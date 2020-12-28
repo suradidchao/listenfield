@@ -6,6 +6,7 @@ import "github.com/suradidchao/listenfield/entity"
 type IRepo interface {
 	Create(tractor entity.Tractor) (tid int, err error)
 	Delete(tractorID int) (err error)
+	Update(tractorID int, tractor entity.Tractor) (err error)
 }
 
 // Repo is a tractor repository for managing tractorr in db
@@ -21,6 +22,11 @@ func (r Repo) Create(tractor entity.Tractor) (tid int, err error) {
 // Delete is a method for deleting tractor in db
 func (r Repo) Delete(tractorID int) (err error) {
 	return r.tractorAdapter.Delete(tractorID)
+}
+
+// Update is a method for updating tractor attributes in a db
+func (r Repo) Update(tractorID int, tractor entity.Tractor) (err error) {
+	return r.tractorAdapter.Update(tractorID, tractor)
 }
 
 // NewRepo is a factory method of tractor repository

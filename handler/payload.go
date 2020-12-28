@@ -35,6 +35,12 @@ type AddTractorPayload struct {
 	TractorName string `json:"tractorName"`
 }
 
+// UpdateTractorPayload is a request payload for updating tractor's attribute of a farm endpoint
+type UpdateTractorPayload struct {
+	TractorName string `json:"tractorName"`
+	FarmID      int    `json:"farmId"`
+}
+
 // AddFieldPayload is a request payload for adding field to a farm endpoint
 type AddFieldPayload struct {
 	FieldName string  `json:"fieldName"`

@@ -135,6 +135,31 @@ func (f FarmHandler) DeleteTractor(c echo.Context) error {
 	return c.JSON(http.StatusOK, Response{Message: "OK"})
 }
 
+// UpdateTractor is a handler for adding a tractor to a farm
+func (f FarmHandler) UpdateTractor(c echo.Context) error {
+	tractorID, err := strconv.Atoi(c.Param("tractor_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid tractor id"})
+	}
+	var updateTractorPayload UpdateTractorPayload
+	if err := c.Bind(&updateTractorPayload); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid payload in the requests"})
+	}
+
+	tractor := entity.Tractor{
+		TractorName: updateTractorPayload.TractorName,
+		FarmID:      updateTractorPayload.FarmID,
+	}
+
+	err = f.farmUsecase.UpdateTractor(tractorID, tractor)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to update tractor"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK"})
+}
+
 // AddField is a handler for adding a tractor to a farm
 func (f FarmHandler) AddField(c echo.Context) error {
 	farmID, err := strconv.Atoi(c.Param("farm_id"))
