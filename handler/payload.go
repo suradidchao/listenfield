@@ -45,7 +45,6 @@ type UpdateTractorPayload struct {
 type AddFieldPayload struct {
 	FieldName string  `json:"fieldName"`
 	Crop      string  `json:"crop"`
-	Status    string  `json:"status"`
 	Area      float64 `json:"area"`
 }
 
@@ -54,6 +53,5 @@ type UpdateFieldPayload struct {
 	FieldName string  `json:"fieldName"`
 	FarmID    int     `json:"farmId"`
 	Crop      string  `json:"crop"`
-	Status    string  `json:"status"`
 	Area      float64 `json:"area"`
 }

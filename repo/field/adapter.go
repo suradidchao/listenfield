@@ -23,8 +23,8 @@ type MySQLAdapter struct {
 
 // Create is a method for inserting field to farm in field table
 func (a MySQLAdapter) Create(field entity.Field) (fieldID int, err error) {
-	insertStmt := fmt.Sprintf("INSERT INTO %s VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)", a.table)
-	res, err := a.db.Exec(insertStmt, field.FarmID, field.Crop, field.Status, field.Area, time.Now(), field.FieldName)
+	insertStmt := fmt.Sprintf("INSERT INTO %s VALUES (DEFAULT, ?, ?, ?, ?, ?)", a.table)
+	res, err := a.db.Exec(insertStmt, field.FarmID, field.Crop, field.Area, time.Now(), field.FieldName)
 	if err != nil {
 		return fieldID, err
 	}
@@ -48,8 +48,8 @@ func (a MySQLAdapter) Delete(fieldID int) (err error) {
 
 // Update is a method for updating field values
 func (a MySQLAdapter) Update(fieldID int, field entity.Field) (err error) {
-	updateStmt := fmt.Sprintf("UPDATE %s SET field_name = ?, farm_id = ?, crop = ?, status = ?, area = ? WHERE id = ?", a.table)
-	_, err = a.db.Exec(updateStmt, field.FieldName, field.FarmID, field.Crop, field.Status, field.Area, fieldID)
+	updateStmt := fmt.Sprintf("UPDATE %s SET field_name = ?, farm_id = ?, crop = ?, area = ? WHERE id = ?", a.table)
+	_, err = a.db.Exec(updateStmt, field.FieldName, field.FarmID, field.Crop, field.Area, fieldID)
 	if err != nil {
 		return err
 	}

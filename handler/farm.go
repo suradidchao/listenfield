@@ -176,7 +176,6 @@ func (f FarmHandler) AddField(c echo.Context) error {
 		FieldName: addFieldPayload.FieldName,
 		FarmID:    farmID,
 		Crop:      addFieldPayload.Crop,
-		Status:    addFieldPayload.Status,
 		Area:      addFieldPayload.Area,
 	}
 
@@ -220,7 +219,6 @@ func (f FarmHandler) UpdateField(c echo.Context) error {
 		FieldName: updateFieldPayload.FieldName,
 		FarmID:    updateFieldPayload.FarmID,
 		Crop:      updateFieldPayload.Crop,
-		Status:    updateFieldPayload.Status,
 		Area:      updateFieldPayload.Area,
 	}
 
