@@ -119,6 +119,22 @@ func (f FarmHandler) AddTractor(c echo.Context) error {
 	return c.JSON(http.StatusOK, Response{Message: "OK", Data: tractorID})
 }
 
+// DeleteTractor is a handler for adding a tractor to a farm
+func (f FarmHandler) DeleteTractor(c echo.Context) error {
+	tractorID, err := strconv.Atoi(c.Param("tractor_id"))
+	if err != nil {
+		fmt.Printf("Err: %s", err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Invalid tractor id"})
+	}
+
+	err = f.farmUsecase.DeleteTractor(tractorID)
+	if err != nil {
+		fmt.Println(err)
+		return c.JSON(http.StatusInternalServerError, Response{Message: "Failed to delete tractor from a farm"})
+	}
+	return c.JSON(http.StatusOK, Response{Message: "OK"})
+}
+
 // NewFarmHandler is a factory method for farm handler
 func NewFarmHandler(fu usecase.FarmUsecase) FarmHandler {
 	return FarmHandler{

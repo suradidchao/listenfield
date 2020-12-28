@@ -39,6 +39,11 @@ func (fc FarmUsecase) AddTractor(tractor entity.Tractor) (fwID int, err error) {
 	return fc.tractorRepo.Create(tractor)
 }
 
+// DeleteTractor is a usecase for deleting tractor from a farm
+func (fc FarmUsecase) DeleteTractor(tractorID int) (err error) {
+	return fc.tractorRepo.Delete(tractorID)
+}
+
 // NewFarmUsecase is a factory method for farm usecase
 func NewFarmUsecase(fr farm.IRepo, fwr farmworker.IRepo, tr tractor.IRepo) FarmUsecase {
 	return FarmUsecase{

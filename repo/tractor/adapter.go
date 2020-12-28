@@ -11,6 +11,7 @@ import (
 // IAdapter is an interface for getting farm from db
 type IAdapter interface {
 	Create(tractor entity.Tractor) (tractorID int, err error)
+	Delete(tractorID int) (err error)
 }
 
 // MySQLAdapter is an tractor adapter for operating with tractor from MYSQL
@@ -32,6 +33,16 @@ func (a MySQLAdapter) Create(tractor entity.Tractor) (tractorID int, err error) 
 	}
 	tractorID = int(lastID)
 	return tractorID, nil
+}
+
+// Delete a tractor
+func (a MySQLAdapter) Delete(tractorID int) (err error) {
+	deleteStmt := fmt.Sprintf("DELETE FROM %s WHERE tractor_id=?", a.table)
+	_, err = a.db.Exec(deleteStmt, tractorID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // NewMySQLAdapter is a factory method for tractor MySQLAdapter
